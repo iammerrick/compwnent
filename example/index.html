@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="vendor/require.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      requirejs.config({
+        paths: {
+          'backbone' : 'vendor/backbone',
+          'jquery' : 'vendor/jquery',
+          'underscore' : 'vendor/underscore',
+          'handlebars' : 'vendor/handlebars'
+        },
+        shim: {
+          'backbone' : {
+            exports: 'Backbone',
+            deps: ['underscore', 'jquery']
+          },
+          'underscore' : {
+            exports: '_'
+          },
+          'handlebars' : {
+            exports: 'Handlebars'
+          }
+        }
+      });
+      
+      require(['templates/merrick', 'backbone'], function(merrick, Backbone){
+        var App = Backbone.View.extend({
+          el: document.body,
+          render: function() {
+            this.$el.html(merrick({
+              name: 'Win!'
+            }))
+          }
+        });
+        
+        new App()
+          .render();
+      });
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

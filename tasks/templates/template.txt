@@ -1,6 +1,7 @@
-define(<%= dependencies %>, function(Handlebars) {
+define(<%= dependencies %>, function(Handlebars, Styla) {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
   templates['<%=name%>'] = template(<%= compiled %>);
   <%= partials %>
+  <%= styles %>
   return templates['<%=name%>'];
 });

@@ -9,6 +9,7 @@
 var handlebars = require('handlebars');
 var path = require('path');
 var _ = require('underscore');
+var fs = require('fs');
 
 var compile = function(src) {
   return handlebars.precompile(src);
@@ -39,7 +40,7 @@ var getPartials = function(src) {
   }
   
   return _.unique(res);
-}
+};
 
 var getDependencies = function(src) {
   var partials = _.map(getPartials(src), function(partial) {
@@ -47,16 +48,24 @@ var getDependencies = function(src) {
   });
 
   return partials;
-}
+};
+
+var getStyles = function(src, stylesheet) {
+  src = '/* File: ' + stylesheet + ' */\n' + src;
+  return src.replace(/\n/g, ' ');
+};
+
 
 module.exports = function(grunt) {
   
   var template = grunt.file.read(__dirname+'/templates/template.txt');
   var partialTemplate = grunt.file.read(__dirname+'/templates/partial.txt');
+  var stylesheetTemplate = grunt.file.read(__dirname+'/templates/stylesheets.txt');
 
-  grunt.registerMultiTask('compwnent', 'Compile your assets to AMD modules.', function() {
-    var files = grunt.file.expandFiles(this.file.src);
-    
+  grunt.registerTask('compwnent', 'Compile your assets to AMD modules.', function() {
+    var config = grunt.config(this.name);
+    var files = grunt.file.expandFiles(config.templates + '/**/*.handlebars');
+
     files.forEach(function(file){
       
       var src = grunt.file.read(file);
@@ -66,11 +75,20 @@ module.exports = function(grunt) {
       
       var name = path.dirname(file) + path.sep + fileName;
       
+      var styles = '';
+      var stylesheet = name.replace(config.templates, config.stylesheets) + '.css';
+      if (fs.existsSync(stylesheet)) {
+        styles = grunt.template.process(stylesheetTemplate, {
+          styles: getStyles(grunt.file.read(stylesheet), stylesheet),
+          name: name
+        });
+      }
+      
       var partials = '';
       
       if (fileName.match(/^_/)) {
         name = path.dirname(file) + path.sep + fileName.replace(/^_/, '');
-        console.log(name);
+
         partials = grunt.template.process(partialTemplate, {
           name: name.replace(new RegExp(path.sep, 'g'), '.')
         });
@@ -78,15 +96,15 @@ module.exports = function(grunt) {
       
       // Compiled source
       var compiled = compile(src);
-      var dependencies = _.union(['handlebars'], getDependencies(src));
+      var dependencies = _.union(['handlebars', 'styla'], getDependencies(src));
       src = grunt.template.process(template, {
         name: name.replace(new RegExp(path.sep, 'g'), '.'),
         compiled: compiled,
         dependencies: JSON.stringify(dependencies),
-        partials: partials
+        partials: partials,
+        styles: styles
       });
-      
-      grunt.file.write(name+'.js', src);
+      grunt.file.write(name + '.js', src);
       
       grunt.log.writeln('File "' + name+'.js' + '" created.');
     });
