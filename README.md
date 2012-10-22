@@ -1,28 +1,12 @@
-# grunt-compwnent
+# compwnent
 
 Compile assets to AMD modules.
 
-## Getting Started
-Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-compwnent`
+## Objectives
 
-Then add this line to your project's `grunt.js` gruntfile:
-
-```javascript
-grunt.loadNpmTasks('grunt-compwnent');
-```
-
-[grunt]: http://gruntjs.com/
-[getting_started]: https://github.com/gruntjs/grunt/blob/master/docs/getting_started.md
-
-## Documentation
-_(Coming soon)_
-
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
-
-## Release History
-_(Nothing yet)_
-
-## License
-Copyright (c) 2012 Merrick Christensen  
-Licensed under the MIT license.
+1. Templates should be able to reside in their own files and add zero friction despite COR issues.
+2. Templates and partials should be accessible by convention.
+3. CSS should be compiled with it's corresponding template.
+4. Remove boilerplate for text to tempate compilation.
+5. Templates should be pre-compiled for performance if possible.
+6. Support for multiple templating languages and CSS preprocessors.
