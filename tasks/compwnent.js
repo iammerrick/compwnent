@@ -1,7 +1,7 @@
 /*
  * compwnent
  *
- * Copyright (c) 2012 Merrick Christensen
+ * Copyright (c) 2012 Merrick Christensen, Esquire
  * Licensed under the MIT license.
  */
 
