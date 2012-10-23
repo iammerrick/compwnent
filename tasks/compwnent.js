@@ -1,6 +1,5 @@
 /*
- * grunt-compwnent
- * https://github.com/merrick.christensen/grunt-compwnent
+ * compwnent
  *
  * Copyright (c) 2012 Merrick Christensen
  * Licensed under the MIT license.
